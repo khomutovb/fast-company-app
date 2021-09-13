@@ -1,25 +1,9 @@
-import React, { useState } from 'react'
-import api from '../api/'
-import * as extraFunction from '../utils/extraFunction'
+import React from 'react'
+import User from './user'
 
-const Users = () => {
-    const [users, setUsers] = useState(api.users.fetchAll())
-    const handleDelete = (userId) => {
-        let key = users
-            .map((item) => item)
-            .find((item) => item._id === userId)
-        setUsers(users.filter((item) => item._id != key._id))
-    }
-    const renderPhrase = (number) => {
-        return (
-            <span className={extraFunction.getBageClasses(number)}>{extraFunction.getBageText(number)}</span>
-        )
-    }
+const Users = ({ users, onDelete, onToggleBookMark }) => {
     return (
-        <>
-            <h4 className="users-length__info">
-                {renderPhrase(users.length)}
-            </h4>
+        <React.Fragment>
             <table className="table">
                 <thead>
                     <tr>
@@ -28,29 +12,24 @@ const Users = () => {
                         <th scope="col">Профессия</th>
                         <th scope="col">Встретился, раз</th>
                         <th scope="col">Оценка</th>
+                        <th scope="col">Избранное</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
                     {users.map((user) => {
                         return (
-                            <tr key={user._id}>
-                                <td>{user.name}</td>
-                                <td>{user.qualities.map((qualitie) => {
-                                    return (
-                                        <span key={qualitie._id} className={`badge m-2  bg-${qualitie.color}`}>{qualitie.name}</span>
-                                    )
-                                })}</td>
-                                <td>{user.profession.name}</td>
-                                <td>{user.completedMeetings}</td>
-                                <td>{user.rate}/5</td>
-                                <td><button onClick={() => handleDelete(user._id)} className='btn btn-danger'>delete</button></td>
-                            </tr>
-                        )
+                            <User
+                                key={user._id}
+                                onDelete={onDelete}
+                                onToggleBookMark={onToggleBookMark}
+                                {...user}
+                            ></User>
+                        );
                     })}
                 </tbody>
             </table>
-        </>
+        </React.Fragment>
     )
 }
 
