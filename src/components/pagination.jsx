@@ -11,7 +11,7 @@ const Pagination = ({ onPageChange, itemsCount, pageSize, currentPage, onPageCha
         <nav aria-label="Page navigation example">
             <ul className="pagination m-1">
                 {pages.length > 0 && itemsCount > pageSize &&
-                    <li className="page-item">
+                    <li className={'page-item ' + (currentPage === 1 ? 'disabled' : '')}>
                         <a className="page-link" aria-label="Previous" onClick={() => onPageChangePrev(currentPage - 1)}>
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -23,7 +23,7 @@ const Pagination = ({ onPageChange, itemsCount, pageSize, currentPage, onPageCha
                     </li>
                 ))}
                 {pages.length > 0 && itemsCount > pageSize &&
-                    <li className="page-item">
+                    <li className={'page-item ' + (currentPage === pages.length ? 'disabled' : '')}>
                         <a className="page-link" aria-label="Next" onClick={() => onPageChangeNext((currentPage + 1), pages.length)}>
                             <span aria-hidden="true">&raquo;</span>
                         </a>
