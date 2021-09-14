@@ -11,7 +11,6 @@ function App() {
         setUsers(users.filter((item) => item._id !== key._id))
     }
     const handleToggleBookMark = (id) => {
-        console.log(id)
         return setUsers(
             users.map((item) => {
                 if (item._id === id) {
