@@ -10,6 +10,16 @@ const Users = ({ users: allUsers, onDelete, onToggleBookMark }) => {
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex)
     }
+    const handlePageChangePrev = (prevIndex) => {
+        if (prevIndex > 0) {
+            setCurrentPage(prevIndex)
+        }
+    }
+    const handlePageChangeNext = (nextIndex, indexLength) => {
+        if (nextIndex <= indexLength) {
+            setCurrentPage(nextIndex)
+        }
+    }
     const users = paginate(allUsers, currentPage, pageSize)
     return (
         <React.Fragment>
@@ -38,7 +48,14 @@ const Users = ({ users: allUsers, onDelete, onToggleBookMark }) => {
                     })}
                 </tbody>
             </table>
-            <Pagination itemsCount={count} pageSize={pageSize} currentPage={currentPage} onPageChange={handlePageChange} />
+            <Pagination
+                itemsCount={count}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+                onPageChangePrev={handlePageChangePrev}
+                onPageChangeNext={handlePageChangeNext}
+            />
         </React.Fragment>
     )
 }
