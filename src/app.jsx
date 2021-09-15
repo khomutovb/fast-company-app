@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
-import SearchStatus from './components/searchStatus'
+import React, { useState, useEffect } from 'react'
 import Users from './components/users'
 import api from './api/'
 function App() {
-    const [users, setUsers] = useState(api.users.fetchAll())
+    const [users, setUsers] = useState()
+    useEffect(() => {
+        api.users.fetchAll().then((data) => setUsers(data))
+    }, [])
     const handleDelete = (userId) => {
         let key = users
             .map((item) => item)
@@ -22,8 +24,14 @@ function App() {
     }
     return (
         <React.Fragment>
-            <SearchStatus length={users.length} />
-            <Users users={users} onDelete={handleDelete} onToggleBookMark={handleToggleBookMark} />
+            {users ? (
+                <Users users={users} onDelete={handleDelete} onToggleBookMark={handleToggleBookMark} />
+            ) : (
+                    <div className="d-flex align-items-center m-2">
+                        <strong>Loading...</strong>
+                    </div>
+                )
+            }
         </React.Fragment>
     );
 }

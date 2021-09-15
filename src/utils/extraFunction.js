@@ -1,5 +1,5 @@
 export function getBageClasses(number) {
-    let classes = 'badge m-2  bg-'
+    let classes = 'badge m-1  bg-'
     classes += number === 0 ? 'danger' : 'primary'
     return classes
 }
