@@ -51,7 +51,7 @@ const Users = ({ users: allUsers, onDelete, onToggleBookMark }) => {
         <React.Fragment>
             <SearchStatus length={count} />
             {professions &&
-                <div className="d-flex">
+                <div className="d-flex flex-wrap">
                     <GroupList
                         selectedItem={selectedProf}
                         items={professions}
@@ -61,31 +61,33 @@ const Users = ({ users: allUsers, onDelete, onToggleBookMark }) => {
                     <button className="btn btn-danger m-1" onClick={clearFilter}>Сброс</button>
                 </div>
             }
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Имя</th>
-                        <th scope="col">Качества</th>
-                        <th scope="col">Профессия</th>
-                        <th scope="col">Встретился, раз</th>
-                        <th scope="col">Оценка</th>
-                        <th scope="col">Избранное</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users.map((user) => {
-                        return (
-                            <User
-                                key={user._id}
-                                onDelete={onDelete}
-                                onToggleBookMark={onToggleBookMark}
-                                {...user}
-                            ></User>
-                        );
-                    })}
-                </tbody>
-            </table>
+            <div className="table-responsive">
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Имя</th>
+                            <th scope="col">Качества</th>
+                            <th scope="col">Профессия</th>
+                            <th scope="col">Встреч</th>
+                            <th scope="col">Оценка</th>
+                            <th scope="col">Избранное</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map((user) => {
+                            return (
+                                <User
+                                    key={user._id}
+                                    onDelete={onDelete}
+                                    onToggleBookMark={onToggleBookMark}
+                                    {...user}
+                                ></User>
+                            );
+                        })}
+                    </tbody>
+                </table>
+            </div>
             <Pagination
                 itemsCount={count}
                 pageSize={pageSize}
