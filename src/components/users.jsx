@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import User from './user'
 import Pagination from './pagination'
 import { paginate } from '../utils/pagination'
 import PropTypes from 'prop-types'
 import api from '../api'
 import GroupList from './groupList'
 import SearchStatus from './searchStatus'
+import UserTable from './userTable'
 import _ from 'lodash'
-const Users = ({ users: allUsers, onDelete, onToggleBookMark }) => {
+const Users = ({ users: allUsers, ...rest }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [professions, setProfessions] = useState()
     const [selectedProf, setSelectedProf] = useState()
-    const pageSize = 2
+    const [sortBy, setSortBy] = useState({ iter: 'name', order: 'asc' })
+    const pageSize = 8
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfessions(data))
     }, [])
@@ -34,6 +35,9 @@ const Users = ({ users: allUsers, onDelete, onToggleBookMark }) => {
             setCurrentPage(nextIndex)
         }
     }
+    const handleSort = (item) => {
+        setSortBy({ iter: item, order: 'asc' })
+    }
     const filteredUsersFunc = () => {
         if (professions instanceof Array) {
             return allUsers.filter((user) => _.isEqual(user.profession, selectedProf))
@@ -43,7 +47,8 @@ const Users = ({ users: allUsers, onDelete, onToggleBookMark }) => {
     }
     const filteredUsers = selectedProf ? filteredUsersFunc() : allUsers
     const count = filteredUsers.length
-    const users = paginate(filteredUsers, currentPage, pageSize)
+    const cortedUsers = _.orderBy(filteredUsers, [sortBy.iter], [sortBy.order])
+    const users = paginate(cortedUsers, currentPage, pageSize)
     const clearFilter = () => {
         setSelectedProf(undefined)
     }
@@ -62,31 +67,7 @@ const Users = ({ users: allUsers, onDelete, onToggleBookMark }) => {
                 </div>
             }
             <div className="table-responsive">
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Имя</th>
-                            <th scope="col">Качества</th>
-                            <th scope="col">Профессия</th>
-                            <th scope="col">Встреч</th>
-                            <th scope="col">Оценка</th>
-                            <th scope="col">Избранное</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map((user) => {
-                            return (
-                                <User
-                                    key={user._id}
-                                    onDelete={onDelete}
-                                    onToggleBookMark={onToggleBookMark}
-                                    {...user}
-                                ></User>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                <UserTable users={users} onSort={handleSort} {...rest} />
             </div>
             <Pagination
                 itemsCount={count}
