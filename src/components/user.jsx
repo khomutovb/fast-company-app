@@ -9,14 +9,7 @@ const User = ({ _id, name, qualities, profession, completedMeetings, rate, onDel
             <td>{name}</td>
             <td>
                 {
-                    qualities.map((qualitie) => {
-                        return (
-                            <Qualitie
-                                key={qualitie._id}
-                                {...qualitie}
-                            />
-                        )
-                    })
+                    
                 }
             </td>
             <td>{profession.name}</td>
