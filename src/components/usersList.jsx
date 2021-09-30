@@ -110,8 +110,8 @@ const Users = () => {
     )
 }
 Users.propTypes = {
-    users: PropTypes.array.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onToggleBookMark: PropTypes.func.isRequired,
+    users: PropTypes.array,
+    onDelete: PropTypes.func,
+    onToggleBookMark: PropTypes.func,
 }
 export default Users
