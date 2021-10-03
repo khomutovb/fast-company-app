@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+// занеси в папочку Icons
 const BookMark = ({ status, onToggleBookMark, _id }) => {
     return (
         <button onClick={() => onToggleBookMark(_id)} type="button" className={status === true ? "btn btn-success" : "btn btn-outline-success"}>

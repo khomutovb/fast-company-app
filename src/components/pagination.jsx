@@ -4,10 +4,11 @@ import PropTypes from 'prop-types'
 
 const Pagination = ({ onPageChange, itemsCount, pageSize, currentPage, onPageChangePrev, onPageChangeNext }) => {
     const pageCount = Math.ceil(itemsCount / pageSize)
-    if (pageCount === 1 ) return null
+    // if (pageCount === 1 ) return null // це працює, но так не роблять, краще винести це в return і заюзать тернарний (я випрпавив)
+    // а якщо pageCount === 0 ?) краще зайюзать більше\менше умову
     const pages = _.range(1, pageCount + 1)
     //[]
-    return (
+    return pageCount > 1 ? (
         <nav aria-label="Page navigation example">
             <ul className="pagination m-1">
                 {pages.length > 0 && itemsCount > pageSize &&
@@ -31,7 +32,7 @@ const Pagination = ({ onPageChange, itemsCount, pageSize, currentPage, onPageCha
                 }
             </ul>
         </nav >
-    )
+    ) : null;
 }
 Pagination.propTypes = {
     onPageChange: PropTypes.func.isRequired,

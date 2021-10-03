@@ -12,7 +12,7 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
     return (
         <thead>
             <tr>
-                {Object.keys(columns).map((column) => (
+                {Object.keys(columns).map((column) => (   // за Object.keys описав в groupList
                     <th
                         key={column}
                         onClick={columns[column].path ? () => handleSort(columns[column].path) : undefined}
@@ -21,6 +21,7 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                     >
                         {columns[column].name}
                         {columns[column].path === selectedSort.path ?
+                          // винеси цю svg в окремий файл як bookmark і їх разом положи в папочку Icons
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style={{ transform: selectedSort.order === 'asc' ? 'rotate(0)' : 'rotate(180deg)' }} viewBox="0 0 16 16">
                                 <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
                             </svg> : ''}

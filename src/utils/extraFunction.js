@@ -1,3 +1,7 @@
+// краще назвать файл відповідно до того
+// що в ньому є, для цього щось типу textUtil.js
+// або іноді їх хелперами називають textHelper.js
+
 export function getBageClasses(number) {
     let classes = 'badge m-1  bg-'
     classes += number === 0 ? 'danger' : 'primary'
