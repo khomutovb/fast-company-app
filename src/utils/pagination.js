@@ -1,3 +1,5 @@
+// так же 0 - paginationUtil.js
+
 import _ from 'lodash'
 
 export function paginate(items, pageNumber, pageSize) {

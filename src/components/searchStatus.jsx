@@ -1,11 +1,12 @@
 import React from 'react'
-import * as extraFunction from '../utils/extraFunction'
+// import * as extraFunction from '../utils/extraFunction'   //  приймай сразу функції, а не об'єкт з ними
+import { getBageClasses, getBageText } from '../utils/extraFunction' //  якщо їх не дуже багато (менше 5-7)
 import PropTypes from 'prop-types'
 
 const SearchStatus = ({ length }) => {
     return (
         <h4>
-            <span className={extraFunction.getBageClasses(length)}>{extraFunction.getBageText(length)}</span>
+            <span className={getBageClasses(length)}>{getBageText(length)}</span>
         </h4>
     )
 }

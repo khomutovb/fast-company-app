@@ -8,9 +8,12 @@ import Table from './table'
 import { Link } from 'react-router-dom';
 
 const UserTable = ({ users, onSort, selectedSort, onToggleBookMark, onDelete }) => {
+    // за columns лайк, хароший підхід
     const columns = {
         name: {
-            path: 'name', name: 'Имя', component: (user) => (
+            path: 'name',
+            name: 'Имя',
+            component: (user) => (
                 <Link to={`/users/${user._id}`} >{user.name}</Link>
             )
         },
@@ -36,6 +39,9 @@ const UserTable = ({ users, onSort, selectedSort, onToggleBookMark, onDelete }) 
             )
         }
     }
+
+    // в {...{ columns, data: users }}  такодж нема сенсу, ти створюєш новий об'єкт { columns, data: users } і відразу його висипаєш
+    // просто <TableBody columns={columns} data={users} />
     return (
         <Table
             onSort={onSort}
