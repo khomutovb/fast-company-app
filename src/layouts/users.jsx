@@ -1,6 +1,6 @@
 import React from 'react'
 import UsersList from '../components/usersList'
-import UserPage from '../components/userPage'
+import UserDetails from '../components/userDetails'
 import { useParams } from 'react-router-dom'
 
 const Users = () => {
@@ -9,7 +9,7 @@ const Users = () => {
 
     return (
         <>
-            {usersId ? <UserPage id={usersId} /> : <UsersList />}
+            {usersId ? <UserDetails id={usersId} /> : <UsersList />}
         </>
     );
 };

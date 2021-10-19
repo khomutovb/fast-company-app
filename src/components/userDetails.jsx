@@ -1,10 +1,10 @@
 // краще назвать userDetails компонент і файл
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import api from '../api'
 import Qualitie from './qualitie'
 import { useHistory } from 'react-router-dom'
-const UserPage = ({ id: userId }) => {
+const UserDetails = ({ id: userId }) => {
     // const userId = id
     // нема жодного сенсу в новій константі, або юзай id те що прийшло
     // або якщо хочеться userId то прийми в деструктурізації пропсів { id: userId }
@@ -12,7 +12,10 @@ const UserPage = ({ id: userId }) => {
     const [user, setUser] = useState()
     // нижче апі кол і зараз він буде визиватись при кожному рендері
     // це те що ми не можемо допустить, виправ це, будь ласка, сам (якщо що пиши питай)
-    api.users.getById(userId).then((data) => setUser(data))
+    useEffect(() => {
+        api.users.getById(userId)
+            .then((data) => setUser(data))
+    }, []);
 
     const handleSave = () => {
         history.push("/users")
@@ -25,10 +28,10 @@ const UserPage = ({ id: userId }) => {
                     <p>Профессия: <strong>{user.profession.name}</strong></p>
                     <p>Качества:
                         {user.qualities.map((qualitie) => (
-                            <Qualitie
-                                key={qualitie._id}
-                                {...qualitie}
-                            />
+                        <Qualitie
+                            key={qualitie._id}
+                            {...qualitie}
+                        />
                     ))}
                     </p>
                     <p>Встреч: <strong>{user.completedMeetings}</strong></p>
@@ -49,7 +52,7 @@ const UserPage = ({ id: userId }) => {
         </>
     )
 }
-UserPage.propTypes = {
+UserDetails.propTypes = {
     id: PropTypes.string,
 }
-export default UserPage
+export default UserDetails

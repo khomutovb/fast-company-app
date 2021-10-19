@@ -7,36 +7,29 @@ import api from '../api'
 import GroupList from './groupList'
 import SearchStatus from './searchStatus'
 import UserTable from './userTable'
+import Search from './search'
 
 const Users = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [professions, setProfessions] = useState()
     const [selectedProf, setSelectedProf] = useState()
+    const [searchName, setSearchName] = useState('')
     const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' })
     const [users, setUsers] = useState()
 
     const pageSize = 8
 
     useEffect(() => {
-        // однакові useEffect, тому не треба розділять їх
-        // цей useEffect відпрацьовує як звичайний componentDidMount
         api.users.fetchAll().then((data) => setUsers(data))
         api.professions.fetchAll().then((data) => setProfessions(data))
     }, [])
 
     useEffect(() => {
-        // цей окремо бо є deps - [selectedProf]
         setCurrentPage(1)
     }, [selectedProf])
 
     const handleDelete = (userId) => {
-        let key = users
-            .map((item) => item) // цікавий мап)) що він робе?)
-            .find(({ _id }) => _id === userId) // го деструктуризацію
-        setUsers(users.filter(({ _id }) => _id !== key._id))
-
-        // будь ласка обдумай що ти тут робиш
-        // спробуй подумать і переписать, адже куча лишніх дій тут (якщо що обговорим - пиши)
+        setUsers(users.filter(({ _id }) => _id !== userId))
     }
 
     const handleToggleBookMark = (id) => {
@@ -44,22 +37,21 @@ const Users = () => {
         return setUsers(
             users.map((item) => item._id === id ? {
                 ...item,
-                  bookmark: !item.bookmark,
-              } : item
-                // через тернарний буде елегантніше
-                // if (item._id === id) {
-                //     item.bookmark ? item.bookmark = false : item.bookmark = true // ти тут присваюєш протилежне зрачення, то юзай просто !item.bookmark
-                // }
-                // return item
+                bookmark: !item.bookmark,
+            } : item
             )
         );
     }
-
-    const handlePageChange = (pageIndex) => {
-        setCurrentPage(pageIndex)
+    const handleChange = ({ target }) => {
+        setSearchName(target.value);
+        setSelectedProf(undefined);
     }
     const handleProfessionsSelect = (items) => {
         setSelectedProf(items)
+        setSearchName('')
+    }
+    const handlePageChange = (pageIndex) => {
+        setCurrentPage(pageIndex)
     }
     const handlePageChangePrev = (prevIndex) => {
         if (prevIndex > 0) {
@@ -79,10 +71,19 @@ const Users = () => {
             if (professions instanceof Array) {
                 return users.filter((user) => _.isEqual(user.profession, selectedProf))
             } else {
-                return selectedProf ? users.filter((user) => user.profession === selectedProf) : users
+                return users
             }
         }
-        const filteredUsers = selectedProf ? filteredUsersFunc() : users
+        const filteredSearch = () => {
+            if (searchName) {
+                let capitalRegExp = new RegExp(`${searchName}`, 'g')
+                return users.filter((user) => capitalRegExp.test((user.name).toLowerCase()) || capitalRegExp.test(user.name))
+            } else {
+                return users
+            }
+
+        }
+        const filteredUsers = selectedProf ? filteredUsersFunc() : filteredSearch()
         const count = filteredUsers.length
         const cortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order])
         const usersCrop = paginate(cortedUsers, currentPage, pageSize)
@@ -92,6 +93,7 @@ const Users = () => {
         return (
             <React.Fragment>
                 <SearchStatus length={count} />
+                <Search value={searchName} handleChange={handleChange} />
                 {professions &&
                     <div className="d-flex flex-wrap">
                         <GroupList

@@ -28,6 +28,6 @@ const QualitiesList = ({ qualities }) => {
 }
 QualitiesList.propTypes = {
     // qualities: PropTypes.array - у випадку масивів краще юзать arrayOf якщо знаєш масив чого в тебе
-    qualities: PropTypes.arrayOf(PropTypes.string),
+    qualities: PropTypes.array,
 }
 export default QualitiesList
