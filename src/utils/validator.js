@@ -1,34 +1,40 @@
 export function validator(data, config) {
-    const errors = {}
+    const errors = {};
     function validate(validateMethod, data, config) {
         let statusValidate;
         switch (validateMethod) {
             case "isRequired":
-                statusValidate = data.trim() === ''
+                if (typeof data === "boolean") {
+                    statusValidate = !data;
+                } else if (typeof data === "string") {
+                    statusValidate = data.trim() === "";
+                } else (
+                    statusValidate = data
+                )
                 break;
             case "isEmail": {
                 const emailRegExp = /^\S+@\S+\.\S+$/g;
-                statusValidate = !emailRegExp.test(data)
+                statusValidate = !emailRegExp.test(data);
                 break;
             }
             case "isCapitalSymbol": {
                 const capitalRegExp = /[A-Z]+/g;
-                statusValidate = !capitalRegExp.test(data)
+                statusValidate = !capitalRegExp.test(data);
                 break;
             }
             case "isContainDigit": {
-                const digitRegExp = /\d+/g
-                statusValidate = !digitRegExp.test(data)
+                const digitRegExp = /\d+/g;
+                statusValidate = !digitRegExp.test(data);
                 break;
             }
             case "min": {
-                statusValidate = data.length < config.value
+                statusValidate = data.length < config.value;
                 break;
             }
             default:
                 break;
         }
-        if (statusValidate) return config.message
+        if (statusValidate) return config.message;
     }
     for (const fieldName in data) {
         for (const validateMethod in config[fieldName]) {
@@ -38,10 +44,9 @@ export function validator(data, config) {
                 config[fieldName][validateMethod]
             );
             if (error && !errors[fieldName]) {
-                errors[fieldName] = error
+                errors[fieldName] = error;
             }
-
         }
     }
-    return errors
+    return errors;
 }

@@ -1,5 +1,5 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 import Qualitie from "./qualitie";
 
 // нема сенсу мать одночасно QualitiesList та Qualitie - залиш щось одне
@@ -18,16 +18,13 @@ const QualitiesList = ({ qualities }) => {
     return (
         <>
             {qualities.map((qualitie) => (
-                <Qualitie
-                    key={qualitie._id}
-                    {...qualitie}
-                />
+                <Qualitie key={qualitie._id} {...qualitie} />
             ))}
         </>
-    )
-}
+    );
+};
 QualitiesList.propTypes = {
     // qualities: PropTypes.array - у випадку масивів краще юзать arrayOf якщо знаєш масив чого в тебе
     qualities: PropTypes.array,
-}
-export default QualitiesList
+};
+export default QualitiesList;
